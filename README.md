@@ -6,6 +6,16 @@ A Chrome extension that saves open tabs' URL and title into a single local
 JSON file, and lets you browse, organize, and remove saved links from a
 manager page.
 
+## Screenshots
+
+| Popup | Manager — List view |
+| --- | --- |
+| ![Popup](docs/images/en/screenshot-popup.png) | ![Manager list view](docs/images/en/screenshot-list.png) |
+
+**Manager — Card view**
+
+![Manager card view](docs/images/en/screenshot-card.png)
+
 ## Requirements
 
 - **Google Chrome 116+** (or another Chromium-based browser with the File
@@ -62,8 +72,23 @@ Open the manager page ("View saved links" in the popup, which also shows
 a live count of saved links) to:
 
 - **Browse** links grouped by domain, in **List** or **Card** view
-  (toggle in the header; your choice is remembered).
+  (toggle in the header; your choice is remembered). List view now shows a
+  small cover thumbnail for each link too (a real thumbnail for YouTube
+  videos, a colored icon tile for everything else) — the same style used in
+  Card view.
 - **Search** by title or URL — filters across whichever view is active.
+- **Sort** by newest added, oldest added, or title A→Z / Z→A (dropdown next
+  to search; your choice is remembered). Not shown in Recent 7 Days or Least
+  Viewed, which have their own fixed order.
+- **Group by site** (checkbox next to sort, on by default) — uncheck it to
+  turn off domain grouping and see every saved link sorted together in one
+  flat list, in the order your sort dropdown says. Turning off grouping is
+  also remembered; the Sites index re-enables it automatically when you
+  click a site, since jumping to a group needs one to jump to.
+- **Sites index** (left sidebar, above Favorites) — lists every distinct
+  domain you've saved links from (e.g. "github.com", "youtube.com"), each
+  with a favicon and a count. Click one to jump straight to that domain's
+  group further down the page.
 - **Favorite** a link (★ button) to pin it in the left-hand sidebar, where
   favorited links can be **drag-reordered**. Favorites also sort to the
   top of their domain group, and domain groups containing a favorite sort
@@ -79,6 +104,12 @@ a live count of saved links) to:
   Opening a link (from any view) records the open.
 - **Remove** a link with its "Remove" button. When a domain group's last
   link is removed, the group disappears.
+- **Bulk-select and delete** — hover over a link (List or Card view) to
+  reveal a checkbox in its top-left corner; check a few to select them (the
+  checkbox stays visible once checked, even without hovering). A bar
+  appears above the list showing how many are selected, with **Delete
+  selected** (asks for confirmation — this can't be undone) and **Cancel**
+  to clear the selection.
 - **Connect a different file** (header button) to switch which file the
   manager reads from and writes to.
 

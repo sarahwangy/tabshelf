@@ -132,6 +132,61 @@ body {
   opacity: 0.85;
 }
 
+.sites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.sites-empty {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.site-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  text-align: left;
+}
+
+.site-btn:hover {
+  border-color: var(--accent);
+}
+
+.site-favicon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
+
+.site-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-count {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
 .favorites-list {
   display: flex;
   flex-direction: column;
@@ -235,6 +290,12 @@ body {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 h1 {
@@ -364,13 +425,20 @@ h1 {
   gap: 8px;
 }
 
+.list-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
 .search-input {
   display: block;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   font: inherit;
   font-size: 13px;
   padding: 9px 12px;
-  margin-bottom: 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
@@ -384,6 +452,98 @@ h1 {
 .search-input:focus {
   outline: none;
   border-color: var(--accent);
+}
+
+.sort-select {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 13px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.group-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.group-toggle input {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.bulk-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+}
+
+.bulk-bar[hidden] {
+  display: none;
+}
+
+.bulk-count {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.bulk-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-checkbox-wrap {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.12s ease;
+}
+
+.select-checkbox {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.link-item:hover .select-checkbox-wrap,
+.link-card:hover .select-checkbox-wrap,
+.select-checkbox-wrap:has(.select-checkbox:checked) {
+  opacity: 1;
 }
 
 .link-groups {
@@ -423,16 +583,28 @@ h1 {
 }
 
 .link-item {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 14px 16px;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: var(--shadow);
+  overflow: hidden;
   transition: border-color 0.12s ease;
+}
+
+/* Higher specificity than .card-cover (width:100%; aspect-ratio:16/9),
+   which is declared later in this file and would otherwise win and blow
+   the thumbnail up to the full row width/height. */
+.link-item .card-cover.link-item-cover {
+  width: 96px;
+  aspect-ratio: auto;
+  align-self: stretch;
+  flex-shrink: 0;
+  border-radius: 0;
 }
 
 .item-actions {
@@ -440,6 +612,7 @@ h1 {
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
+  padding: 14px 16px 14px 0;
 }
 
 .link-item:hover {
@@ -447,8 +620,12 @@ h1 {
 }
 
 .link-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   min-width: 0;
   flex: 1;
+  padding: 14px 12px;
 }
 
 .link-title {
@@ -503,29 +680,108 @@ h1 {
 
 .link-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
 }
 
 .link-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 14px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: var(--shadow);
-  transition: border-color 0.12s ease;
+  overflow: hidden;
+  transition: border-color 0.12s ease, transform 0.12s ease;
 }
 
 .link-card:hover {
   border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.card-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.card-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-cover-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 2px;
+}
+
+.card-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-cover-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-cover-favicon {
+  width: 24px;
+  height: 24px;
+}
+
+.card-cover-badge {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  max-width: calc(100% - 12px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
 }
 
 .card-title {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.35;
   color: var(--fg);
   text-decoration: none;
   display: -webkit-box;
@@ -539,8 +795,8 @@ h1 {
   text-decoration: underline;
 }
 
-.card-url {
-  font-size: 11px;
+.card-host {
+  font-size: 10.5px;
   color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -551,13 +807,28 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-top: auto;
+  gap: 6px;
+  margin-top: 2px;
   padding-top: 4px;
+  border-top: 1px solid var(--border);
 }
 
 .card-date {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--muted);
   flex-shrink: 0;
+}
+
+.card-footer .item-actions {
+  gap: 2px;
+}
+
+.card-footer .btn-favorite {
+  font-size: 12px;
+  padding: 2px 4px;
+}
+
+.card-footer .btn-remove {
+  font-size: 10px;
+  padding: 3px 6px;
 }

@@ -8,6 +8,10 @@
 <body>
   <div class="page-layout">
     <div class="sidebar-column">
+      <aside id="sites-sidebar" class="sidebar-box sites-sidebar" hidden>
+        <h2 class="sidebar-box-title">🌐 Sites</h2>
+        <div id="sites-list" class="sites-list"></div>
+      </aside>
       <aside id="favorites-sidebar" class="sidebar-box favorites-sidebar" hidden>
         <h2 class="sidebar-box-title">★ Favorites</h2>
         <div id="favorites-list" class="favorites-list"></div>
@@ -41,7 +45,26 @@
         </div>
       </div>
       <div id="list-section" hidden>
-        <input id="search-input" class="search-input" type="search" placeholder="Search by title or URL…" />
+        <div class="list-controls">
+          <input id="search-input" class="search-input" type="search" placeholder="Search by title or URL…" />
+          <select id="sort-select" class="sort-select" aria-label="Sort links">
+            <option value="newest">Newest added</option>
+            <option value="oldest">Oldest added</option>
+            <option value="title-asc">Title A→Z</option>
+            <option value="title-desc">Title Z→A</option>
+          </select>
+          <label class="group-toggle">
+            <input id="group-toggle" type="checkbox" checked />
+            Group by site
+          </label>
+        </div>
+        <div id="bulk-bar" class="bulk-bar" hidden>
+          <span id="bulk-count" class="bulk-count"></span>
+          <div class="bulk-bar-actions">
+            <button id="bulk-delete-btn" class="btn btn-remove" type="button">Delete selected</button>
+            <button id="bulk-clear-btn" class="btn btn-secondary" type="button">Cancel</button>
+          </div>
+        </div>
         <div id="link-list" class="link-groups"></div>
       </div>
     </main>

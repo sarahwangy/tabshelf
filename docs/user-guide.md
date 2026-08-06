@@ -24,8 +24,12 @@ afterward.
   - [Saving tabs](#saving-tabs)
     - [Setting: close tab after saving](#setting-close-tab-after-saving)
   - [Browsing and managing saved links](#browsing-and-managing-saved-links)
+    - [Sites index](#sites-index)
     - [List view](#list-view)
     - [Card view](#card-view)
+    - [Sorting](#sorting)
+    - [Group by site](#group-by-site)
+    - [Multi-select and bulk delete](#multi-select-and-bulk-delete)
     - [Favorites and drag-to-reorder](#favorites-and-drag-to-reorder)
     - [Recent 7 Days sidebar](#recent-7-days-sidebar)
     - [Least Viewed view](#least-viewed-view)
@@ -151,18 +155,33 @@ you open the extension.
 ## Browsing and managing saved links
 
 Click "View saved links" in the popup to open the manager page. It's split
-into a **favorites sidebar** on the left and a **main content area** on the
-right.
+into a left sidebar (**Sites** index, **Favorites**, and **Recent 7 Days**)
+and a **main content area** on the right.
+
+### Sites index
+
+At the top of the left sidebar, "🌐 Sites" lists every distinct domain
+you've saved links from — each entry shows a favicon, the domain name, and
+how many links it has (see the sidebar in the List view screenshot below).
+
+Click a site to jump straight down to that domain's group in the main list
+(clearing any active search or date filter first, so the group is always
+visible). This is a quick way to get to a specific site's links — e.g. all
+your saved GitHub issues, or Notion pages — without scrolling.
 
 ### List view
 
-List view is the default — links are automatically **grouped by domain**:
+List view is the default — links are automatically **grouped by domain**,
+each with a small cover thumbnail:
 
 ![List view](images/en/manager-list.svg)
 
 - The total saved-link count is shown at the top of the page.
 - The search box at the top filters by **title or URL**; both views
   (List/Card) share the same search results.
+- Each link shows a cover thumbnail on the left — a real video thumbnail for
+  YouTube links, or a colored icon tile (favicon on a gradient background)
+  for everything else, same as Card view.
 - Each group's header shows how many links that domain has, e.g. "GITHUB.COM
   (3)". When the last link in a group is removed, the group disappears
   automatically — no empty groups are left behind.
@@ -178,13 +197,57 @@ List view is the default — links are automatically **grouped by domain**:
 ### Card view
 
 Click **"▦ Cards"** at the top to switch to a card grid layout — still
-grouped by domain, but each link is shown as a card side by side, for a
-more visual, tile-based way to browse:
+grouped by domain, but each link is shown as a compact card with a cover
+image side by side, for a more visual, tile-based way to browse. YouTube
+links show the video's real thumbnail with a site-name badge; other links
+show a colored gradient tile with the site's favicon centered in a white
+icon badge:
 
 ![Card view](images/en/manager-card.svg)
 
 Your view choice is remembered, so the manager page opens in whichever view
 you used last.
+
+### Sorting
+
+Next to the search box, the sort dropdown controls the order links appear
+in within each domain group, in both List and Card view:
+
+- **Newest added** (default)
+- **Oldest added**
+- **Title A→Z**
+- **Title Z→A**
+
+Your choice is remembered. The dropdown is hidden in Recent 7 Days and Least
+Viewed, since those views use their own fixed ordering.
+
+### Group by site
+
+Next to the sort dropdown, the **"Group by site"** checkbox is on by
+default, which is what keeps links organized into per-domain groups.
+Uncheck it and the domain grouping disappears — every visible link (after
+search) is shown in a single flat list or grid, ordered purely by whatever
+the sort dropdown says. This is the way to get a true A→Z (or newest-first,
+etc.) ordering across *all* your links, not just within one site's group.
+
+Your choice is remembered. Clicking an entry in the Sites index
+automatically turns grouping back on if it was off, since jumping to a
+domain's group only makes sense when groups exist.
+
+### Multi-select and bulk delete
+
+Hover over any link — in List or Card view — and a checkbox appears in its
+top-left corner. Check a few links to select them; a checked box stays
+visible even after you move the mouse away, so you can keep building up a
+selection across the page (and across a search or a "Group by site"
+toggle).
+
+Once at least one link is selected, a bar appears above the list showing
+how many are selected, with two buttons:
+
+- **Delete selected** — asks for confirmation, then removes every selected
+  link in one write. This can't be undone.
+- **Cancel** — clears the selection without deleting anything.
 
 ### Favorites and drag-to-reorder
 

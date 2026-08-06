@@ -6,10 +6,15 @@ import {
   regrantPermission,
   getViewMode,
   setViewMode,
+  getSortMode,
+  setSortMode,
+  getGroupByDomain,
+  setGroupByDomain,
 } from './src/storage.js';
 import { removeLink } from './src/linkMerge.js';
 import { filterLinks } from './src/filterLinks.js';
-import { groupLinksByDomain } from './src/groupByDomain.js';
+import { sortLinks } from './src/sortLinks.js';
+import { groupLinksByDomain, getDomain } from './src/groupByDomain.js';
 import { getFavorites, toggleFavorite, reorderFavorites, sortGroupsByFavorite } from './src/favorites.js';
 import { incrementOpenCount, getLeastViewed } from './src/leastViewed.js';
 import { logExpected, logUnexpected } from './src/log.js';
@@ -25,21 +30,33 @@ const reconnectBtn = document.getElementById('reconnect-btn');
 const errorEl = document.getElementById('error');
 const linkCountEl = document.getElementById('link-count');
 const searchInput = document.getElementById('search-input');
+const sortSelect = document.getElementById('sort-select');
+const groupToggle = document.getElementById('group-toggle');
+const groupToggleLabel = document.querySelector('.group-toggle');
 const viewListBtn = document.getElementById('view-list-btn');
 const viewCardBtn = document.getElementById('view-card-btn');
 const viewLeastViewedBtn = document.getElementById('view-least-viewed-btn');
 const sidebarColumn = document.querySelector('.sidebar-column');
+const sitesSidebar = document.getElementById('sites-sidebar');
+const sitesList = document.getElementById('sites-list');
 const favoritesSidebar = document.getElementById('favorites-sidebar');
 const favoritesList = document.getElementById('favorites-list');
 const recentDaysSidebar = document.getElementById('recent-days-sidebar');
 const recentDaysList = document.getElementById('recent-days-list');
+const bulkBar = document.getElementById('bulk-bar');
+const bulkCountEl = document.getElementById('bulk-count');
+const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
+const bulkClearBtn = document.getElementById('bulk-clear-btn');
 
 let currentHandle = null;
 let currentLinks = [];
 let searchQuery = '';
 let busy = false;
+const selectedIds = new Set();
 let pendingHandle = null;
 let viewMode = 'list';
+let sortMode = 'newest';
+let groupByDomainEnabled = true;
 let selectedDate = null;
 
 function showPermissionLostUI(handle) {
@@ -65,6 +82,7 @@ function showConnect() {
   listSection.hidden = true;
   reconnectBtn.hidden = true;
   sidebarColumn.hidden = true;
+  sitesSidebar.hidden = true;
   favoritesSidebar.hidden = true;
   recentDaysSidebar.hidden = true;
   linkCountEl.textContent = '';
@@ -75,6 +93,7 @@ function showList() {
   listSection.hidden = false;
   reconnectBtn.hidden = false;
   sidebarColumn.hidden = false;
+  sitesSidebar.hidden = false;
   favoritesSidebar.hidden = false;
   recentDaysSidebar.hidden = false;
 }
@@ -99,6 +118,16 @@ function renderEmptyMessage(text) {
 function renderLinkItem(link) {
   const li = document.createElement('li');
   li.className = 'link-item';
+  li.append(renderSelectCheckbox(link));
+
+  let hostname = '';
+  try {
+    hostname = new URL(link.url).hostname;
+  } catch {
+    hostname = link.url;
+  }
+  const cover = renderCardCover(link, hostname);
+  cover.classList.add('link-item-cover');
 
   const main = document.createElement('div');
   main.className = 'link-main';
@@ -132,13 +161,101 @@ function renderLinkItem(link) {
   actions.className = 'item-actions';
   actions.append(renderFavoriteToggle(link), renderRemoveButton(link));
 
-  li.append(main, actions);
+  li.append(cover, main, actions);
   return li;
+}
+
+const PLACEHOLDER_GRADIENTS = [
+  ['#8b5cf6', '#6366f1'],
+  ['#f472b6', '#ec4899'],
+  ['#fb923c', '#f97316'],
+  ['#22d3ee', '#0ea5e9'],
+  ['#34d399', '#10b981'],
+  ['#f87171', '#ef4444'],
+  ['#a78bfa', '#7c3aed'],
+];
+
+function getYouTubeId(url) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes('youtube.com') && parsed.pathname === '/watch') {
+      return parsed.searchParams.get('v');
+    }
+    if (parsed.hostname === 'youtu.be') {
+      return parsed.pathname.slice(1);
+    }
+  } catch {
+    // not a valid URL
+  }
+  return null;
+}
+
+function hashToIndex(str, mod) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  return hash % mod;
+}
+
+function renderCardCover(link, hostname) {
+  const cover = document.createElement('div');
+  cover.className = 'card-cover';
+
+  const youTubeId = getYouTubeId(link.url);
+  if (youTubeId) {
+    const img = document.createElement('img');
+    img.className = 'card-cover-img';
+    img.src = `https://img.youtube.com/vi/${youTubeId}/mqdefault.jpg`;
+    img.alt = '';
+    img.loading = 'lazy';
+
+    const play = document.createElement('span');
+    play.className = 'card-cover-play';
+    play.textContent = '▶';
+
+    cover.append(img, play);
+
+    const badge = document.createElement('span');
+    badge.className = 'card-cover-badge';
+    badge.textContent = hostname.replace(/^www\./, '');
+    cover.append(badge);
+  } else {
+    const [from, to] = PLACEHOLDER_GRADIENTS[hashToIndex(hostname, PLACEHOLDER_GRADIENTS.length)];
+    cover.classList.add('card-cover-placeholder');
+    cover.style.background = `linear-gradient(135deg, ${from}, ${to})`;
+
+    const iconBox = document.createElement('div');
+    iconBox.className = 'card-cover-icon-box';
+
+    const favicon = document.createElement('img');
+    favicon.className = 'card-cover-favicon';
+    favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(hostname)}&sz=64`;
+    favicon.alt = '';
+
+    iconBox.append(favicon);
+    cover.append(iconBox);
+  }
+
+  return cover;
 }
 
 function renderLinkCard(link) {
   const card = document.createElement('div');
   card.className = 'link-card';
+  card.append(renderSelectCheckbox(link));
+
+  let hostname = '';
+  try {
+    hostname = new URL(link.url).hostname;
+  } catch {
+    hostname = link.url;
+  }
+
+  const cover = renderCardCover(link, hostname);
+
+  const body = document.createElement('div');
+  body.className = 'card-body';
 
   const a = document.createElement('a');
   a.className = 'card-title';
@@ -147,9 +264,9 @@ function renderLinkCard(link) {
   a.target = '_blank';
   a.addEventListener('click', () => onOpenLink(link.id));
 
-  const urlDiv = document.createElement('div');
-  urlDiv.className = 'card-url';
-  urlDiv.textContent = link.url;
+  const hostSpan = document.createElement('div');
+  hostSpan.className = 'card-host';
+  hostSpan.textContent = hostname;
 
   const footer = document.createElement('div');
   footer.className = 'card-footer';
@@ -163,8 +280,68 @@ function renderLinkCard(link) {
   actions.append(renderFavoriteToggle(link), renderRemoveButton(link));
 
   footer.append(dateSpan, actions);
-  card.append(a, urlDiv, footer);
+  body.append(a, hostSpan, footer);
+  card.append(cover, body);
   return card;
+}
+
+function updateBulkBar() {
+  const count = selectedIds.size;
+  bulkBar.hidden = count === 0;
+  bulkCountEl.textContent = `${count} selected`;
+}
+
+function onToggleSelect(id, checked) {
+  if (checked) {
+    selectedIds.add(id);
+  } else {
+    selectedIds.delete(id);
+  }
+  updateBulkBar();
+}
+
+function renderSelectCheckbox(link) {
+  const wrap = document.createElement('label');
+  wrap.className = 'select-checkbox-wrap';
+
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.className = 'select-checkbox';
+  checkbox.checked = selectedIds.has(link.id);
+  checkbox.setAttribute('aria-label', `Select ${link.title}`);
+  checkbox.addEventListener('change', () => onToggleSelect(link.id, checkbox.checked));
+
+  wrap.append(checkbox);
+  return wrap;
+}
+
+async function onBulkDelete() {
+  if (busy || selectedIds.size === 0) return;
+  const count = selectedIds.size;
+  if (!window.confirm(`Remove ${count} saved link${count === 1 ? '' : 's'}? This can't be undone.`)) return;
+  busy = true;
+  try {
+    const remaining = currentLinks.filter((link) => !selectedIds.has(link.id));
+    try {
+      await writeLinksFile(currentHandle, remaining);
+      currentLinks = remaining;
+      selectedIds.clear();
+      updateBulkBar();
+      render();
+    } catch (err) {
+      logUnexpected('bulk removing links', err);
+      showError('Could not remove the selected links. Please reconnect.');
+      await loadAndRender();
+    }
+  } finally {
+    busy = false;
+  }
+}
+
+function onBulkClear() {
+  selectedIds.clear();
+  updateBulkBar();
+  render();
 }
 
 function renderFavoriteToggle(link) {
@@ -224,6 +401,81 @@ function renderFavoriteCard(link) {
 
   card.append(a, urlDiv, unfavBtn);
   return card;
+}
+
+function domainToSlug(domain) {
+  return `group-${domain.replace(/[^a-z0-9]+/gi, '-')}`;
+}
+
+function getSiteGroups(links) {
+  const byDomain = new Map();
+  for (const link of links) {
+    const domain = getDomain(link.url);
+    byDomain.set(domain, (byDomain.get(domain) || 0) + 1);
+  }
+  return Array.from(byDomain, ([domain, count]) => ({ domain, count })).sort((a, b) =>
+    a.domain.localeCompare(b.domain)
+  );
+}
+
+function renderSiteButton(site) {
+  const btn = document.createElement('button');
+  btn.className = 'site-btn';
+  btn.type = 'button';
+
+  const favicon = document.createElement('img');
+  favicon.className = 'site-favicon';
+  favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(site.domain)}&sz=32`;
+  favicon.alt = '';
+
+  const label = document.createElement('span');
+  label.className = 'site-label';
+  label.textContent = site.domain;
+
+  const count = document.createElement('span');
+  count.className = 'site-count';
+  count.textContent = String(site.count);
+
+  btn.append(favicon, label, count);
+  btn.addEventListener('click', () => onSelectSite(site.domain));
+  return btn;
+}
+
+function renderSites() {
+  sitesList.innerHTML = '';
+  const sites = getSiteGroups(currentLinks);
+  if (sites.length === 0) {
+    const empty = document.createElement('p');
+    empty.className = 'sites-empty';
+    empty.textContent = 'No sites yet.';
+    sitesList.append(empty);
+    return;
+  }
+  for (const site of sites) {
+    sitesList.append(renderSiteButton(site));
+  }
+}
+
+// Jumping to a site only makes sense against the grouped, unfiltered list —
+// so this resets search/date/least-viewed state back to the plain list
+// view before scrolling, the same way a stale filter would otherwise hide
+// the very group being jumped to.
+function onSelectSite(domain) {
+  selectedDate = null;
+  searchQuery = '';
+  searchInput.value = '';
+  if (viewMode === 'least-viewed') {
+    applyViewMode('list');
+    setViewMode('list').catch((err) => logUnexpected('saving view mode', err));
+  }
+  if (!groupByDomainEnabled) {
+    groupByDomainEnabled = true;
+    groupToggle.checked = true;
+    setGroupByDomain(true).catch((err) => logUnexpected('saving group-by-domain', err));
+  }
+  render();
+  const target = document.getElementById(domainToSlug(domain));
+  if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
 }
 
 function renderFavorites() {
@@ -294,6 +546,8 @@ function onSelectDate(date) {
 
 function renderDateFiltered(date) {
   searchInput.hidden = true;
+  sortSelect.hidden = true;
+  groupToggleLabel.hidden = true;
   const dayLinks = currentLinks
     .filter((link) => getDateKey(new Date(link.savedAt)) === date)
     .sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
@@ -394,6 +648,8 @@ async function onOpenLink(id) {
 
 function renderLeastViewed() {
   searchInput.hidden = true;
+  sortSelect.hidden = true;
+  groupToggleLabel.hidden = true;
   const leastViewed = getLeastViewed(currentLinks, 5);
   linkCountEl.textContent = `${leastViewed.length} least-viewed link${leastViewed.length === 1 ? '' : 's'}`;
 
@@ -412,6 +668,7 @@ function renderLeastViewed() {
 
 function render() {
   linkList.innerHTML = '';
+  renderSites();
   renderFavorites();
 
   if (currentLinks.length === 0) {
@@ -419,6 +676,8 @@ function render() {
     renderRecentDays();
     linkCountEl.textContent = '';
     searchInput.hidden = false;
+    sortSelect.hidden = false;
+    groupToggleLabel.hidden = false;
     renderEmptyMessage('No links saved yet — use the popup to save your first tab.');
     return;
   }
@@ -438,8 +697,10 @@ function render() {
     return;
   }
   searchInput.hidden = false;
+  sortSelect.hidden = false;
+  groupToggleLabel.hidden = false;
 
-  const visibleLinks = filterLinks(currentLinks, searchQuery);
+  const visibleLinks = sortLinks(filterLinks(currentLinks, searchQuery), sortMode);
 
   linkCountEl.textContent =
     searchQuery.trim() === ''
@@ -451,9 +712,20 @@ function render() {
     return;
   }
 
+  if (!groupByDomainEnabled) {
+    const container = document.createElement(viewMode === 'card' ? 'div' : 'ul');
+    container.className = viewMode === 'card' ? 'link-cards' : 'link-list';
+    for (const link of visibleLinks) {
+      container.append(viewMode === 'card' ? renderLinkCard(link) : renderLinkItem(link));
+    }
+    linkList.append(container);
+    return;
+  }
+
   for (const group of sortGroupsByFavorite(groupLinksByDomain(visibleLinks))) {
     const section = document.createElement('section');
     section.className = 'link-group';
+    section.id = domainToSlug(group.domain);
 
     const header = document.createElement('h2');
     header.className = 'group-header';
@@ -499,6 +771,8 @@ async function onRemove(id) {
     currentLinks = removeLink(currentLinks, id);
     try {
       await writeLinksFile(currentHandle, currentLinks);
+      selectedIds.delete(id);
+      updateBulkBar();
       render();
     } catch (err) {
       // The write failed (e.g. the file was moved/deleted or permission was
@@ -558,6 +832,21 @@ searchInput.addEventListener('input', () => {
   render();
 });
 
+sortSelect.addEventListener('change', () => {
+  sortMode = sortSelect.value;
+  render();
+  setSortMode(sortMode).catch((err) => logUnexpected('saving sort mode', err));
+});
+
+groupToggle.addEventListener('change', () => {
+  groupByDomainEnabled = groupToggle.checked;
+  render();
+  setGroupByDomain(groupByDomainEnabled).catch((err) => logUnexpected('saving group-by-domain', err));
+});
+
+bulkDeleteBtn.addEventListener('click', onBulkDelete);
+bulkClearBtn.addEventListener('click', onBulkClear);
+
 function onViewModeClick(mode) {
   if (mode === viewMode && selectedDate === null) return;
   selectedDate = null;
@@ -575,6 +864,20 @@ async function init() {
     applyViewMode(await getViewMode());
   } catch (err) {
     logUnexpected('loading view mode', err);
+  }
+
+  try {
+    sortMode = await getSortMode();
+    sortSelect.value = sortMode;
+  } catch (err) {
+    logUnexpected('loading sort mode', err);
+  }
+
+  try {
+    groupByDomainEnabled = await getGroupByDomain();
+    groupToggle.checked = groupByDomainEnabled;
+  } catch (err) {
+    logUnexpected('loading group-by-domain', err);
   }
 
   try {

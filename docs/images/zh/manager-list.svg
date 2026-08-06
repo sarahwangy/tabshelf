@@ -1,21 +1,43 @@
-<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, 'PingFang SC', 'Microsoft YaHei', sans-serif">
-  <rect x="0" y="0" width="1000" height="500" fill="#ffffff"/>
+<svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="grad-purple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="grad-orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fb923c"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1000" height="560" fill="#ffffff"/>
+
+  <!-- 站点索引 -->
+  <rect x="30" y="30" width="200" height="118" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="44" y="54" font-size="13" font-weight="600" fill="#1a1a1a">🌐 站点</text>
+  <rect x="44" y="66" width="172" height="24" rx="6" fill="#f9fafb" stroke="#e5e7eb"/>
+  <circle cx="58" cy="78" r="6" fill="#dbeafe"/>
+  <text x="70" y="82" font-size="10" fill="#1a1a1a">github.com</text>
+  <text x="204" y="82" font-size="9" fill="#9aa1ac" text-anchor="end">3</text>
+  <rect x="44" y="94" width="172" height="24" rx="6" fill="#f9fafb" stroke="#e5e7eb"/>
+  <circle cx="58" cy="106" r="6" fill="#fee2e2"/>
+  <text x="70" y="110" font-size="10" fill="#1a1a1a">stackoverflow.com</text>
+  <text x="204" y="110" font-size="9" fill="#9aa1ac" text-anchor="end">2</text>
+  <rect x="44" y="122" width="172" height="18" rx="6" fill="none"/>
+  <text x="44" y="134" font-size="9" fill="#6b7280">点击可跳转到对应分组 ↓</text>
 
   <!-- favorites sidebar -->
-  <rect x="30" y="30" width="200" height="270" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="44" y="54" font-size="13" font-weight="600" fill="#1a1a1a">★ 收藏</text>
+  <rect x="30" y="158" width="200" height="180" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="44" y="182" font-size="13" font-weight="600" fill="#1a1a1a">★ 收藏</text>
 
-  <rect x="44" y="68" width="172" height="60" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="54" y="88" font-size="12" font-weight="500" fill="#1a1a1a">Anthropic Claude 文档</text>
-  <text x="54" y="104" font-size="10" fill="#6b7280">docs.anthropic.com</text>
-  <text x="204" y="82" font-size="12" fill="#2563eb" text-anchor="end">★</text>
+  <rect x="44" y="196" width="172" height="60" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="54" y="216" font-size="12" font-weight="500" fill="#1a1a1a">Anthropic Claude 文档</text>
+  <text x="54" y="232" font-size="10" fill="#6b7280">docs.anthropic.com</text>
+  <text x="204" y="210" font-size="12" fill="#2563eb" text-anchor="end">★</text>
 
-  <rect x="44" y="136" width="172" height="60" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="54" y="156" font-size="12" font-weight="500" fill="#1a1a1a">claude-code · GitHub</text>
-  <text x="54" y="172" font-size="10" fill="#6b7280">github.com/anthropics</text>
-  <text x="204" y="150" font-size="12" fill="#2563eb" text-anchor="end">★</text>
-
-  <text x="44" y="222" font-size="10" fill="#6b7280">拖动卡片可调整收藏顺序</text>
+  <rect x="44" y="264" width="172" height="60" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="54" y="284" font-size="12" font-weight="500" fill="#1a1a1a">claude-code · GitHub</text>
+  <text x="54" y="300" font-size="10" fill="#6b7280">github.com/anthropics</text>
+  <text x="204" y="278" font-size="12" fill="#2563eb" text-anchor="end">★</text>
 
   <!-- main content -->
   <text x="250" y="54" font-size="20" font-weight="600" fill="#1a1a1a">Saved Links</text>
@@ -32,48 +54,69 @@
   <rect x="850" y="34" width="120" height="28" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
   <text x="910" y="52" font-size="11" fill="#1a1a1a" text-anchor="middle">更换文件</text>
 
-  <!-- search -->
-  <rect x="250" y="90" width="720" height="34" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
+  <!-- search + sort + 分组开关 -->
+  <rect x="250" y="90" width="500" height="34" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
   <text x="262" y="112" font-size="12" fill="#9aa1ac">按标题或网址搜索…</text>
+  <rect x="760" y="90" width="110" height="34" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="772" y="112" font-size="11" fill="#1a1a1a">最近添加</text>
+  <text x="858" y="112" font-size="9" fill="#6b7280">▾</text>
+  <rect x="880" y="100" width="13" height="13" rx="3" fill="#2563eb"/>
+  <text x="887" y="110" font-size="9" fill="#ffffff" text-anchor="middle">✓</text>
+  <text x="899" y="111" font-size="10" fill="#6b7280">按站点分组</text>
 
-  <!-- group 1 -->
+  <!-- group 1: github.com -->
   <text x="250" y="150" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="1">GITHUB.COM (3)</text>
 
-  <rect x="250" y="158" width="720" height="50" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="266" y="178" font-size="13" font-weight="500" fill="#1a1a1a">anthropics/claude-code: Claude Code</text>
-  <text x="266" y="196" font-size="11" fill="#6b7280">https://github.com/anthropics/claude-code · 2026/07/20</text>
-  <text x="892" y="188" font-size="13" fill="#2563eb" text-anchor="middle">★</text>
-  <rect x="906" y="173" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="933" y="189" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
+  <rect x="250" y="158" width="720" height="64" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <rect x="250" y="158" width="72" height="64" fill="url(#grad-purple)"/>
+  <rect x="270" y="174" width="32" height="32" rx="8" fill="#ffffff"/>
+  <text x="286" y="196" font-size="13" text-anchor="middle" fill="#1a1a1a">⚙</text>
+  <text x="334" y="182" font-size="13" font-weight="500" fill="#1a1a1a">anthropics/claude-code: Claude Code</text>
+  <text x="334" y="200" font-size="11" fill="#6b7280">https://github.com/anthropics/claude-code · 2026/07/20</text>
+  <text x="892" y="194" font-size="13" fill="#2563eb" text-anchor="middle">★</text>
+  <rect x="906" y="179" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="933" y="195" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
 
-  <rect x="250" y="216" width="720" height="50" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="266" y="236" font-size="13" font-weight="500" fill="#1a1a1a">Issues · anthropics/claude-code</text>
-  <text x="266" y="254" font-size="11" fill="#6b7280">https://github.com/anthropics/claude-code/issues · 2026/06/12</text>
-  <text x="892" y="246" font-size="13" fill="#9aa1ac" text-anchor="middle">☆</text>
-  <rect x="906" y="231" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="933" y="247" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
+  <rect x="250" y="230" width="720" height="64" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <rect x="250" y="230" width="72" height="64" fill="url(#grad-purple)"/>
+  <rect x="270" y="246" width="32" height="32" rx="8" fill="#ffffff"/>
+  <text x="286" y="268" font-size="13" text-anchor="middle" fill="#1a1a1a">⚙</text>
+  <text x="334" y="254" font-size="13" font-weight="500" fill="#1a1a1a">Issues · anthropics/claude-code</text>
+  <text x="334" y="272" font-size="11" fill="#6b7280">https://github.com/anthropics/claude-code/issues · 2026/06/12</text>
+  <text x="892" y="266" font-size="13" fill="#9aa1ac" text-anchor="middle">☆</text>
+  <rect x="906" y="251" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="933" y="267" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
 
-  <rect x="250" y="274" width="720" height="50" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="266" y="294" font-size="13" font-weight="500" fill="#1a1a1a">Pull requests · anthropics/claude-code</text>
-  <text x="266" y="312" font-size="11" fill="#6b7280">https://github.com/anthropics/claude-code/pulls · 2026/05/03</text>
-  <text x="892" y="304" font-size="13" fill="#9aa1ac" text-anchor="middle">☆</text>
-  <rect x="906" y="289" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="933" y="305" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
+  <rect x="250" y="302" width="720" height="64" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <rect x="250" y="302" width="72" height="64" fill="url(#grad-purple)"/>
+  <rect x="270" y="318" width="32" height="32" rx="8" fill="#ffffff"/>
+  <text x="286" y="340" font-size="13" text-anchor="middle" fill="#1a1a1a">⚙</text>
+  <text x="334" y="326" font-size="13" font-weight="500" fill="#1a1a1a">Pull requests · anthropics/claude-code</text>
+  <text x="334" y="344" font-size="11" fill="#6b7280">https://github.com/anthropics/claude-code/pulls · 2026/05/03</text>
+  <text x="892" y="338" font-size="13" fill="#9aa1ac" text-anchor="middle">☆</text>
+  <rect x="906" y="323" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="933" y="339" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
 
-  <!-- group 2 -->
-  <text x="250" y="352" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="1">STACKOVERFLOW.COM (2)</text>
+  <!-- group 2: stackoverflow.com -->
+  <text x="250" y="404" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="1">STACKOVERFLOW.COM (2)</text>
 
-  <rect x="250" y="360" width="720" height="50" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="266" y="380" font-size="13" font-weight="500" fill="#1a1a1a">How to use the File System Access API</text>
-  <text x="266" y="398" font-size="11" fill="#6b7280">https://stackoverflow.com/questions/123456 · 2026/04/18</text>
-  <text x="892" y="390" font-size="13" fill="#9aa1ac" text-anchor="middle">☆</text>
-  <rect x="906" y="375" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="933" y="391" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
-
-  <rect x="250" y="418" width="720" height="50" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="266" y="438" font-size="13" font-weight="500" fill="#1a1a1a">Manifest V3 service worker lifecycle</text>
-  <text x="266" y="456" font-size="11" fill="#6b7280">https://stackoverflow.com/questions/789012 · 2026/03/02</text>
+  <rect x="250" y="412" width="720" height="64" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <rect x="250" y="412" width="72" height="64" fill="url(#grad-orange)"/>
+  <rect x="270" y="428" width="32" height="32" rx="8" fill="#ffffff"/>
+  <text x="286" y="450" font-size="13" text-anchor="middle" fill="#1a1a1a">◆</text>
+  <text x="334" y="436" font-size="13" font-weight="500" fill="#1a1a1a">How to use the File System Access API</text>
+  <text x="334" y="454" font-size="11" fill="#6b7280">https://stackoverflow.com/questions/123456 · 2026/04/18</text>
   <text x="892" y="448" font-size="13" fill="#9aa1ac" text-anchor="middle">☆</text>
   <rect x="906" y="433" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
   <text x="933" y="449" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
+
+  <rect x="250" y="484" width="720" height="64" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <rect x="250" y="484" width="72" height="64" fill="url(#grad-orange)"/>
+  <rect x="270" y="500" width="32" height="32" rx="8" fill="#ffffff"/>
+  <text x="286" y="522" font-size="13" text-anchor="middle" fill="#1a1a1a">◆</text>
+  <text x="334" y="508" font-size="13" font-weight="500" fill="#1a1a1a">Manifest V3 service worker lifecycle</text>
+  <text x="334" y="526" font-size="11" fill="#6b7280">https://stackoverflow.com/questions/789012 · 2026/03/02</text>
+  <text x="892" y="520" font-size="13" fill="#9aa1ac" text-anchor="middle">☆</text>
+  <rect x="906" y="505" width="54" height="24" rx="6" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="933" y="521" font-size="10" fill="#6b7280" text-anchor="middle">删除</text>
 </svg>

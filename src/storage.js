@@ -7,6 +7,8 @@ const HANDLE_KEY = 'linksFile';
 const BACKUP_HANDLE_KEY = 'backupFile';
 const CLOSE_TAB_AFTER_SAVE_KEY = 'closeTabAfterSave';
 const VIEW_MODE_KEY = 'viewMode';
+const SORT_MODE_KEY = 'sortMode';
+const GROUP_BY_DOMAIN_KEY = 'groupByDomain';
 
 function openDb() {
   return new Promise((resolve, reject) => {
@@ -150,6 +152,26 @@ export async function getViewMode() {
 
 export async function setViewMode(mode) {
   await setStoredValue(VIEW_MODE_KEY, VALID_VIEW_MODES.includes(mode) ? mode : 'list');
+}
+
+const VALID_SORT_MODES = ['newest', 'oldest', 'title-asc', 'title-desc'];
+
+export async function getSortMode() {
+  const stored = await getStoredValue(SORT_MODE_KEY);
+  return VALID_SORT_MODES.includes(stored) ? stored : 'newest';
+}
+
+export async function setSortMode(mode) {
+  await setStoredValue(SORT_MODE_KEY, VALID_SORT_MODES.includes(mode) ? mode : 'newest');
+}
+
+export async function getGroupByDomain() {
+  const stored = await getStoredValue(GROUP_BY_DOMAIN_KEY);
+  return stored === false ? false : true;
+}
+
+export async function setGroupByDomain(value) {
+  await setStoredValue(GROUP_BY_DOMAIN_KEY, Boolean(value));
 }
 
 export async function readLinksFile(handle) {
