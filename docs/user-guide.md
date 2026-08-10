@@ -96,7 +96,26 @@ to be loaded manually:
 
 The first time you use it, the extension isn't linked to any file yet — you
 need to choose (or create) one yourself as the place your links get saved
-to.
+to. The easiest way is to just try saving:
+
+1. Click the Tab Saver toolbar icon, then click **"Save All Tabs"** or
+   **"Save Current Tab"**.
+2. Since no file is connected yet, this immediately opens the system file
+   picker — create or choose a `.json` file (e.g. `saved-tabs.json`) to use
+   as the main file.
+3. A second file picker will pop up right after, to optionally choose a
+   **backup file**. If you'd like an automatically-mirrored backup, pick or
+   create one; if not, just click "Cancel" to skip this step — it won't
+   affect the main file at all.
+4. Your tabs are saved right away, using the file you just picked.
+
+Once connected, both the popup and the manager page automatically read from
+this file every time you use them — **you won't need to connect again**,
+unless you switch computers, or Chrome resets the permission after
+reloading the extension (see [FAQ](#faq) below).
+
+Alternatively, you can connect a file ahead of time (without saving
+anything yet) from the manager page:
 
 1. Click the Tab Saver toolbar icon, then click **"View saved links"** to
    open the manager page.
@@ -105,17 +124,7 @@ to.
 
    ![Connect a file](images/en/manager-connect.svg)
 
-3. In the system file picker that opens, create or choose a `.json` file
-   (e.g. `saved-tabs.json`) to use as the main file.
-4. A second file picker will pop up right after, to optionally choose a
-   **backup file**. If you'd like an automatically-mirrored backup, pick or
-   create one; if not, just click "Cancel" to skip this step — it won't
-   affect the main file at all.
-
-Once connected, the manager page automatically reads from this file every
-time you open it — **you won't need to connect again**, unless you switch
-computers, or Chrome resets the permission after reloading the extension
-(see [FAQ](#faq) below).
+3. Follow the same file-picker steps as above.
 
 ---
 

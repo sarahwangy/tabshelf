@@ -51,11 +51,14 @@ file picker (File System Access API) — not through `manifest.json`.
 ### First-time setup
 
 1. Click the Tab Saver toolbar icon.
-2. Click "View saved links" to open the manager page, then "Connect a
-   file" to create or choose the JSON file that will store your saved
-   links. You'll be prompted a second time to optionally pick a backup
-   file — its contents mirror the main file on every save/remove, and you
-   can skip it by cancelling that picker.
+2. Click "Save All Tabs" or "Save Current Tab" — since no file is
+   connected yet, this opens a file picker to create or choose the JSON
+   file that will store your saved links, then saves immediately. You'll
+   be prompted a second time to optionally pick a backup file — its
+   contents mirror the main file on every save/remove, and you can skip
+   it by cancelling that picker.
+   (Alternatively, you can connect a file ahead of time from the manager
+   page: click "View saved links", then "Connect a file".)
 
 ### Saving tabs
 
