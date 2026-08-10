@@ -23,6 +23,8 @@ const SAVE_CANCELED_MESSAGE = 'Save canceled — no file selected.';
 const PERMISSION_DENIED_MESSAGE =
   'Permission was not granted. Reconnect from "View saved links" if this keeps happening.';
 const CORRUPTED_MESSAGE = 'The connected file isn\'t a valid Tab Saver file — nothing was written. Reconnect from "View saved links".';
+const SAVE_FAILED_MESSAGE = 'Something went wrong trying to save. Try again, or reconnect from "View saved links".';
+const INIT_FAILED_MESSAGE = 'Something went wrong. Open "View saved links" to check the connection.';
 
 let busy = false;
 
@@ -62,7 +64,7 @@ async function saveTabs(tabs) {
         statusEl.textContent = PERMISSION_DENIED_MESSAGE;
       } else {
         logUnexpected('save: checking connected file', err);
-        statusEl.textContent = NO_FILE_MESSAGE;
+        statusEl.textContent = SAVE_FAILED_MESSAGE;
       }
       return;
     }
@@ -79,7 +81,7 @@ async function saveTabs(tabs) {
           statusEl.textContent = SAVE_CANCELED_MESSAGE;
         } else {
           logUnexpected('save: connecting file', err);
-          statusEl.textContent = NO_FILE_MESSAGE;
+          statusEl.textContent = SAVE_FAILED_MESSAGE;
         }
         return;
       }
@@ -172,7 +174,7 @@ async function init() {
       logUnexpected('permission check at load', err);
       saveAllBtn.disabled = true;
       saveCurrentBtn.disabled = true;
-      statusEl.textContent = NO_FILE_MESSAGE;
+      statusEl.textContent = INIT_FAILED_MESSAGE;
     }
   }
 }
