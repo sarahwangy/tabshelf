@@ -1,5 +1,6 @@
 import {
   getConnectedFileForAction,
+  connectFile,
   readLinksFile,
   writeLinksFile,
   getCloseTabAfterSave,
@@ -17,7 +18,8 @@ const settingsBtn = document.getElementById('settings-btn');
 const settingsPanel = document.getElementById('settings-panel');
 const closeTabToggle = document.getElementById('close-tab-toggle');
 
-const NO_FILE_MESSAGE = 'No file connected. Open "View saved links" to connect one.';
+const NO_FILE_MESSAGE = 'Click Save to connect a file.';
+const SAVE_CANCELED_MESSAGE = 'Save canceled — no file selected.';
 const PERMISSION_DENIED_MESSAGE =
   'Permission was not granted. Reconnect from "View saved links" if this keeps happening.';
 const CORRUPTED_MESSAGE = 'The connected file isn\'t a valid Tab Saver file — nothing was written. Reconnect from "View saved links".';
@@ -65,8 +67,22 @@ async function saveTabs(tabs) {
       return;
     }
     if (!handle) {
-      statusEl.textContent = NO_FILE_MESSAGE;
-      return;
+      // No file has ever been connected. The click that got us here is a
+      // real user gesture, so it's safe to show the file picker right now
+      // instead of bouncing the user to the manager page first.
+      try {
+        handle = await connectFile();
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          // Expected: the user closed/canceled the file picker.
+          logExpected('save: file picker canceled', err);
+          statusEl.textContent = SAVE_CANCELED_MESSAGE;
+        } else {
+          logUnexpected('save: connecting file', err);
+          statusEl.textContent = NO_FILE_MESSAGE;
+        }
+        return;
+      }
     }
     try {
       const { links: existingLinks, corrupted } = await readLinksFile(handle);
@@ -135,8 +151,8 @@ async function init() {
     // normal, same as the passive check would have — no worse off either way.
     const handle = await getConnectedFileForAction();
     if (!handle) {
-      saveAllBtn.disabled = true;
-      saveCurrentBtn.disabled = true;
+      // No file connected yet — buttons stay enabled; saveTabs() will
+      // trigger the file picker inline on click.
       statusEl.textContent = NO_FILE_MESSAGE;
     } else {
       try {
