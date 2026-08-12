@@ -88,6 +88,10 @@ a live count of saved links) to:
   flat list, in the order your sort dropdown says. Turning off grouping is
   also remembered; the Sites index re-enables it automatically when you
   click a site, since jumping to a group needs one to jump to.
+- Click a letter in the **A-Z index** on the right edge (List/Cards view) to
+  jump straight to the first link whose title starts with that letter —
+  switches to ungrouped, title-sorted view if needed. Click **"#"** to
+  scroll back to the top.
 - **Sites index** (left sidebar, above Favorites) — lists every distinct
   domain you've saved links from (e.g. "github.com", "youtube.com"), each
   with a favicon and a count. Click one to jump straight to that domain's
