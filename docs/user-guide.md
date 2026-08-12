@@ -29,6 +29,7 @@ afterward.
     - [Card view](#card-view)
     - [Sorting](#sorting)
     - [Group by site](#group-by-site)
+    - [Jumping to a letter](#jumping-to-a-letter)
     - [Multi-select and bulk delete](#multi-select-and-bulk-delete)
     - [Favorites and drag-to-reorder](#favorites-and-drag-to-reorder)
     - [Recent 7 Days sidebar](#recent-7-days-sidebar)
@@ -242,6 +243,21 @@ etc.) ordering across *all* your links, not just within one site's group.
 Your choice is remembered. Clicking an entry in the Sites index
 automatically turns grouping back on if it was off, since jumping to a
 domain's group only makes sense when groups exist.
+
+### Jumping to a letter
+
+In List or Card view, an A-Z strip appears along the right edge of the page.
+Click a letter to jump straight to the first saved link whose title starts
+with it — letters with no matching titles are greyed out. If the page isn't
+already sorted alphabetically, clicking a letter switches it to **ungrouped,
+"Title A→Z"** sorting first, then jumps.
+
+Click **"#"** at the top of the strip to scroll back to the top of the page
+without changing your sort or grouping settings.
+
+The A-Z index isn't shown in Least Viewed view or when a Recent 7 Days date
+filter is active, and reflects your current search filter — if you've typed
+a search query, only letters with matching results are clickable.
 
 ### Multi-select and bulk delete
 

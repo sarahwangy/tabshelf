@@ -47,6 +47,7 @@ const bulkBar = document.getElementById('bulk-bar');
 const bulkCountEl = document.getElementById('bulk-count');
 const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
 const bulkClearBtn = document.getElementById('bulk-clear-btn');
+const azIndexNav = document.getElementById('az-index');
 
 let currentHandle = null;
 let currentLinks = [];
@@ -118,6 +119,7 @@ function renderEmptyMessage(text) {
 function renderLinkItem(link) {
   const li = document.createElement('li');
   li.className = 'link-item';
+  li.dataset.id = link.id;
   li.append(renderSelectCheckbox(link));
 
   let hostname = '';
@@ -243,6 +245,7 @@ function renderCardCover(link, hostname) {
 function renderLinkCard(link) {
   const card = document.createElement('div');
   card.className = 'link-card';
+  card.dataset.id = link.id;
   card.append(renderSelectCheckbox(link));
 
   let hostname = '';
@@ -405,6 +408,75 @@ function renderFavoriteCard(link) {
 
 function domainToSlug(domain) {
   return `group-${domain.replace(/[^a-z0-9]+/gi, '-')}`;
+}
+
+const AZ_LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)); // A-Z
+
+// Which letters currently have at least one matching title, computed against
+// the search-filtered set re-sorted as title-asc — independent of the page's
+// actual sort/group settings, since this only answers "does content exist",
+// not "in what order is it displayed".
+function getFilteredTitleSortedLinks() {
+  return sortLinks(filterLinks(currentLinks, searchQuery), 'title-asc');
+}
+
+function buildAzIndex() {
+  const topBtn = document.createElement('button');
+  topBtn.type = 'button';
+  topBtn.className = 'az-index-btn az-index-top';
+  topBtn.textContent = '#';
+  topBtn.setAttribute('aria-label', 'Scroll to top');
+  topBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  azIndexNav.append(topBtn);
+
+  for (const letter of AZ_LETTERS) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'az-index-btn';
+    btn.textContent = letter;
+    btn.dataset.letter = letter;
+    btn.addEventListener('click', () => onAzLetterClick(letter));
+    azIndexNav.append(btn);
+  }
+}
+
+function onAzLetterClick(letter) {
+  const needsModeSwitch = groupByDomainEnabled || sortMode !== 'title-asc';
+  if (needsModeSwitch) {
+    groupByDomainEnabled = false;
+    groupToggle.checked = false;
+    setGroupByDomain(false).catch((err) => logUnexpected('saving group-by-domain', err));
+    sortMode = 'title-asc';
+    sortSelect.value = 'title-asc';
+    setSortMode('title-asc').catch((err) => logUnexpected('saving sort mode', err));
+    render();
+  }
+
+  const match = getFilteredTitleSortedLinks().find((link) => link.title.charAt(0).toUpperCase() === letter);
+  if (!match) return;
+  const target = linkList.querySelector(`.link-item[data-id="${CSS.escape(match.id)}"], .link-card[data-id="${CSS.escape(match.id)}"]`);
+  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Recomputes which letters have matching content in the current
+// search-filtered set and shows/hides the whole index for the active view.
+// Called from render() — never rebuilds the 27 buttons, only toggles state.
+// Note: the nav stays visible even with zero saved links (all 26 letters
+// simply end up disabled) — "#" must keep working per the spec's error
+// table ("No saved links at all" → letters disabled, "#" still works).
+function renderAzIndex() {
+  const showIndex = !selectedDate && viewMode !== 'least-viewed';
+  azIndexNav.hidden = !showIndex;
+  if (!showIndex) return;
+
+  const availableLetters = new Set(
+    getFilteredTitleSortedLinks().map((link) => link.title.charAt(0).toUpperCase())
+  );
+  for (const btn of azIndexNav.querySelectorAll('.az-index-btn[data-letter]')) {
+    btn.disabled = !availableLetters.has(btn.dataset.letter);
+  }
 }
 
 function getSiteGroups(links) {
@@ -667,6 +739,7 @@ function renderLeastViewed() {
 }
 
 function render() {
+  renderAzIndex();
   linkList.innerHTML = '';
   renderSites();
   renderFavorites();
@@ -860,6 +933,8 @@ viewCardBtn.addEventListener('click', () => onViewModeClick('card'));
 viewLeastViewedBtn.addEventListener('click', () => onViewModeClick('least-viewed'));
 
 async function init() {
+  buildAzIndex();
+
   try {
     applyViewMode(await getViewMode());
   } catch (err) {
