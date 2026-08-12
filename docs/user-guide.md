@@ -255,9 +255,9 @@ already sorted alphabetically, clicking a letter switches it to **ungrouped,
 Click **"#"** at the top of the strip to scroll back to the top of the page
 without changing your sort or grouping settings.
 
-The A-Z index isn't shown in Least Viewed view, and reflects your current
-search filter — if you've typed a search query, only letters with matching
-results are clickable.
+The A-Z index isn't shown in Least Viewed view or when a Recent 7 Days date
+filter is active, and reflects your current search filter — if you've typed
+a search query, only letters with matching results are clickable.
 
 ### Multi-select and bulk delete
 

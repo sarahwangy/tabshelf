@@ -456,7 +456,7 @@ function onAzLetterClick(letter) {
 
   const match = getFilteredTitleSortedLinks().find((link) => link.title.charAt(0).toUpperCase() === letter);
   if (!match) return;
-  const target = document.querySelector(`[data-id="${CSS.escape(match.id)}"]`);
+  const target = linkList.querySelector(`.link-item[data-id="${CSS.escape(match.id)}"], .link-card[data-id="${CSS.escape(match.id)}"]`);
   if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
