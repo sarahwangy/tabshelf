@@ -192,6 +192,13 @@ function getYouTubeId(url) {
   return null;
 }
 
+function hideOnError(img) {
+  img.addEventListener('error', () => {
+    img.style.display = 'none';
+  });
+  return img;
+}
+
 function hashToIndex(str, mod) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -211,6 +218,7 @@ function renderCardCover(link, hostname) {
     img.src = `https://img.youtube.com/vi/${youTubeId}/mqdefault.jpg`;
     img.alt = '';
     img.loading = 'lazy';
+    hideOnError(img);
 
     const play = document.createElement('span');
     play.className = 'card-cover-play';
@@ -234,6 +242,7 @@ function renderCardCover(link, hostname) {
     favicon.className = 'card-cover-favicon';
     favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(hostname)}&sz=64`;
     favicon.alt = '';
+    hideOnError(favicon);
 
     iconBox.append(favicon);
     cover.append(iconBox);
@@ -499,6 +508,7 @@ function renderSiteButton(site) {
   favicon.className = 'site-favicon';
   favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(site.domain)}&sz=32`;
   favicon.alt = '';
+  hideOnError(favicon);
 
   const label = document.createElement('span');
   label.className = 'site-label';
