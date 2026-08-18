@@ -447,7 +447,10 @@ h1 {
   gap: 8px;
   margin-bottom: 12px;
   position: sticky;
-  top: 0;
+  /* Sticks just below .page-header, which is sticky at top:0 itself —
+     --header-height is kept in sync with its real rendered height by
+     manager.js since the header can wrap onto more lines at narrow widths. */
+  top: var(--header-height, 49px);
   z-index: 10;
   background: var(--bg);
   padding: 12px 0;

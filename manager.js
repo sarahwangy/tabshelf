@@ -50,6 +50,7 @@ const bulkCountEl = document.getElementById('bulk-count');
 const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
 const bulkClearBtn = document.getElementById('bulk-clear-btn');
 const azIndexNav = document.getElementById('az-index');
+const pageHeaderEl = document.querySelector('.page-header');
 
 let currentHandle = null;
 let currentLinks = [];
@@ -953,8 +954,20 @@ viewListBtn.addEventListener('click', () => onViewModeClick('list'));
 viewCardBtn.addEventListener('click', () => onViewModeClick('card'));
 viewLeastViewedBtn.addEventListener('click', () => onViewModeClick('least-viewed'));
 
+// .page-header is sticky at top:0 in its own right (title + view toggle
+// stay visible), so .list-controls needs to stick just below its real
+// rendered height rather than at top:0 too — otherwise the two overlap and
+// the header (higher z-index) hides the search/sort/group-by toolbar
+// entirely. The height isn't a fixed constant since the header can wrap
+// onto more lines at narrow viewport widths, so this keeps it in sync.
+function syncHeaderHeight() {
+  document.documentElement.style.setProperty('--header-height', `${pageHeaderEl.offsetHeight}px`);
+}
+
 async function init() {
   buildAzIndex();
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
 
   try {
     applyViewMode(await getViewMode());
