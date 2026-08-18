@@ -76,19 +76,13 @@ function permissionDeniedError(handle) {
   return err;
 }
 
-export async function connectFile() {
-  const handle = await window.showSaveFilePicker({
-    suggestedName: 'saved-tabs.json',
-    types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
-  });
-  await setStoredValue(HANDLE_KEY, handle);
-
-  // The backup file is optional: if the user cancels this second picker (or
-  // it fails for any other reason), keep the main connection and just skip
-  // the backup rather than aborting the whole connect flow.
+async function connectBackupFile(mainHandle) {
+  // The backup file is optional: if the user cancels this picker (or it
+  // fails for any other reason), keep the main connection and just skip the
+  // backup rather than aborting the whole connect flow.
   try {
     const backupHandle = await window.showSaveFilePicker({
-      suggestedName: suggestBackupName(handle.name),
+      suggestedName: suggestBackupName(mainHandle.name),
       types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
     });
     await setStoredValue(BACKUP_HANDLE_KEY, backupHandle);
@@ -97,7 +91,40 @@ export async function connectFile() {
     // a backup at all.
     logExpected('backup file not connected', err);
   }
+}
 
+// Creates a brand-new links file. Uses the save picker, which lets the OS
+// dialog warn before overwriting if the user picks an existing name — but
+// it's intended for starting fresh, not for reconnecting to a file saved in
+// an earlier session (use openExistingFile() for that).
+export async function connectFile() {
+  const handle = await window.showSaveFilePicker({
+    suggestedName: 'saved-tabs.json',
+    types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
+  });
+  await setStoredValue(HANDLE_KEY, handle);
+  await connectBackupFile(handle);
+  return handle;
+}
+
+// Reconnects to a links file saved in an earlier session (e.g. after the
+// extension was reloaded/reinstalled and the stored file handle was lost).
+// Uses the open picker so the browser's file dialog reads as "choose a
+// file", not "save a file" — showSaveFilePicker technically also lets you
+// pick an existing file, but its UI invites typing a new name and creating
+// an empty one by mistake, which is the exact bug this avoids.
+export async function openExistingFile() {
+  const [handle] = await window.showOpenFilePicker({
+    types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
+  });
+  // showOpenFilePicker only grants read permission by default; request
+  // readwrite right away while we still have the user gesture from the
+  // picker interaction, so later saves don't hit a surprise permission
+  // prompt.
+  const granted = (await handle.requestPermission({ mode: 'readwrite' })) === 'granted';
+  if (!granted) throw permissionDeniedError(handle);
+  await setStoredValue(HANDLE_KEY, handle);
+  await connectBackupFile(handle);
   return handle;
 }
 

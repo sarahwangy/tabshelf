@@ -121,11 +121,13 @@ anything yet) from the manager page:
 1. Click the Tab Saver toolbar icon, then click **"View saved links"** to
    open the manager page.
 2. The manager page will say "No file connected yet" — click **"Connect a
-   file"**.
+   file"** to open a JSON file you saved in an earlier session (this opens
+   the system's file-open dialog, so it loads that file's existing links
+   rather than risking an accidental blank one). If you don't have one yet,
+   click **"Create a new one instead"** and follow the same file-picker
+   steps as above.
 
    ![Connect a file](images/en/manager-connect.svg)
-
-3. Follow the same file-picker steps as above.
 
 ---
 

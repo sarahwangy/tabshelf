@@ -58,7 +58,9 @@ file picker (File System Access API) — not through `manifest.json`.
    contents mirror the main file on every save/remove, and you can skip
    it by cancelling that picker.
    (Alternatively, you can connect a file ahead of time from the manager
-   page: click "View saved links", then "Connect a file".)
+   page: click "View saved links", then "Connect a file" to open a JSON
+   file you saved in an earlier session — or "Create a new one instead" if
+   you don't have one yet.)
 
 ### Saving tabs
 
@@ -118,7 +120,9 @@ a live count of saved links) to:
   selected** (asks for confirmation — this can't be undone) and **Cancel**
   to clear the selection.
 - **Connect a different file** (header button) to switch which file the
-  manager reads from and writes to.
+  manager reads from and writes to — opens a file picker for choosing an
+  existing JSON file (not a save dialog), so it always loads that file's
+  existing links instead of risking an accidental blank one.
 
 Tab Saver is the sole intended writer of the connected JSON file. If the
 connected file is unparseable, or is valid JSON that doesn't match the

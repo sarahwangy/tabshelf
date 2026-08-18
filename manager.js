@@ -1,6 +1,7 @@
 import {
   getConnectedFile,
   connectFile,
+  openExistingFile,
   readLinksFile,
   writeLinksFile,
   regrantPermission,
@@ -25,6 +26,7 @@ const listSection = document.getElementById('list-section');
 const linkList = document.getElementById('link-list');
 const connectMessageEl = document.getElementById('connect-message');
 const connectBtn = document.getElementById('connect-btn');
+const createNewBtn = document.getElementById('create-new-btn');
 const grantBtn = document.getElementById('grant-btn');
 const reconnectBtn = document.getElementById('reconnect-btn');
 const errorEl = document.getElementById('error');
@@ -64,7 +66,7 @@ function showPermissionLostUI(handle) {
   pendingHandle = handle;
   connectMessageEl.textContent = 'Access to your previously connected file was lost.';
   grantBtn.hidden = false;
-  connectBtn.textContent = 'Or connect a different file';
+  connectBtn.textContent = 'Or open a different file';
   connectBtn.classList.remove('btn-primary');
   connectBtn.classList.add('btn-secondary');
 }
@@ -872,9 +874,9 @@ async function onRemove(id) {
   }
 }
 
-async function onConnectClick() {
+async function connectWith(pickFile) {
   try {
-    currentHandle = await connectFile();
+    currentHandle = await pickFile();
     resetConnectUI();
     clearError();
     searchQuery = '';
@@ -886,6 +888,14 @@ async function onConnectClick() {
       showError('Could not connect the file. Please try again.');
     }
   }
+}
+
+async function onConnectClick() {
+  await connectWith(openExistingFile);
+}
+
+async function onCreateNewClick() {
+  await connectWith(connectFile);
 }
 
 async function onGrantClick() {
@@ -909,6 +919,7 @@ async function onGrantClick() {
 
 connectBtn.addEventListener('click', onConnectClick);
 reconnectBtn.addEventListener('click', onConnectClick);
+createNewBtn.addEventListener('click', onCreateNewClick);
 grantBtn.addEventListener('click', onGrantClick);
 searchInput.addEventListener('input', () => {
   searchQuery = searchInput.value;
