@@ -124,32 +124,32 @@
   </g>
 
   <!-- A-Z quick-jump index -->
-  <rect x="978" y="28" width="18" height="410" rx="9" fill="#f9fafb" stroke="#e5e7eb"/>
-  <text x="987" y="34.0" font-size="8.5" font-weight="600" fill="#6b7280" text-anchor="middle">#</text>
-  <text x="987" y="49.2" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">A</text>
-  <text x="987" y="64.4" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">B</text>
-  <text x="987" y="79.6" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">C</text>
-  <text x="987" y="94.8" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">D</text>
-  <text x="987" y="110.0" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">E</text>
-  <text x="987" y="125.2" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">F</text>
-  <text x="987" y="140.4" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">G</text>
-  <text x="987" y="155.6" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">H</text>
-  <text x="987" y="170.8" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">I</text>
-  <text x="987" y="186.0" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">J</text>
-  <text x="987" y="201.2" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">K</text>
-  <text x="987" y="216.4" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">L</text>
-  <text x="987" y="231.6" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">M</text>
-  <text x="987" y="246.8" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">N</text>
-  <text x="987" y="262.0" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">O</text>
-  <text x="987" y="277.2" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">P</text>
-  <text x="987" y="292.4" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">Q</text>
-  <text x="987" y="307.6" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">R</text>
-  <text x="987" y="322.8" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">S</text>
-  <text x="987" y="338.0" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">T</text>
-  <text x="987" y="353.2" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">U</text>
-  <text x="987" y="368.4" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">V</text>
-  <text x="987" y="383.6" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">W</text>
-  <text x="987" y="398.8" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">X</text>
-  <text x="987" y="414.0" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">Y</text>
-  <text x="987" y="429.2" font-size="8.5" font-weight="500" fill="#2563eb" text-anchor="middle">Z</text>
+  <rect x="966" y="19.5" width="24" height="421" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="978" y="38.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">#</text>
+  <text x="978" y="53.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">A</text>
+  <text x="978" y="68.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">B</text>
+  <text x="978" y="83.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">C</text>
+  <text x="978" y="98.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">D</text>
+  <text x="978" y="113.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">E</text>
+  <text x="978" y="128.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">F</text>
+  <text x="978" y="143.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">G</text>
+  <text x="978" y="158.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">H</text>
+  <text x="978" y="173.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">I</text>
+  <text x="978" y="188.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">J</text>
+  <text x="978" y="203.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">K</text>
+  <text x="978" y="218.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">L</text>
+  <text x="978" y="233.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">M</text>
+  <text x="978" y="248.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">N</text>
+  <text x="978" y="263.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">O</text>
+  <text x="978" y="278.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">P</text>
+  <text x="978" y="293.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">Q</text>
+  <text x="978" y="308.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">R</text>
+  <text x="978" y="323.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">S</text>
+  <text x="978" y="338.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">T</text>
+  <text x="978" y="353.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">U</text>
+  <text x="978" y="368.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">V</text>
+  <text x="978" y="383.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">W</text>
+  <text x="978" y="398.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">X</text>
+  <text x="978" y="413.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">Y</text>
+  <text x="978" y="428.0" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">Z</text>
 </svg>
